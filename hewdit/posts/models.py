@@ -1,6 +1,9 @@
 from django.db import models
 
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
 # Create your models here.
+# add user model from dr. j's git here
 
 # class Thread(models.Model):
 #     body = models.CharField(max_length=2000)
