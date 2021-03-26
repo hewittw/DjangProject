@@ -26,7 +26,16 @@
   <body class="laxBallBackground">
     <h1>hello world - testing templates for {{ name }}</h1>
     <h2> {{ name }} </h2>
-    <h2> {{ bodys }} </h2>
+    <h2> {{ bodys1 }} </h2>
+    <h2> {{ bodys1 }} </h2>
+    <h2> {{ allPosts }} </h2>
+
+    {% for pst in allPosts %}
+      <li>{{ pst }}</li>
+      <li>{{ pst.body }}</li>
+      <h4> here </h4>
+    {% endfor %}
+
   </body>
 
 </html>

@@ -12,7 +12,7 @@ def index(request):
     bodys = []
     for i in range(3):
         bodys.append(allPosts[i].body)
-    return render(request, 'posts/baseLine.html', {'name': 'Index', 'bodys': bodys})
+    return render(request, 'posts/baseLine.html', {'name': 'Index', 'bodys1': bodys, "allPosts": allPosts})
 
 def stream(request):
     return render(request, 'posts/baseLine.html', {'name': 'stream'})
