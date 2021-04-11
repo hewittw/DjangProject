@@ -5,5 +5,5 @@ from . import views
 urlpatterns = [
     path('', views.index, name='index'),
     path('stream', views.stream, name='stream'),
-    path('thread', views.thread, name='thread'),
+    path('thread/<int:pId>', views.thread, name='thread'),
 ]

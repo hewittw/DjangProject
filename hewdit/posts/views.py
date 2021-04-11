@@ -15,7 +15,8 @@ def index(request):
     return render(request, 'posts/baseLine.html', {'name': 'Index', 'bodys1': bodys, "allPosts": allPosts})
 
 def stream(request):
-    return render(request, 'posts/baseLine.html', {'name': 'stream'})
+    return render(request, 'posts/stream.html', {'name': 'stream'})
 
-def thread(request):
-    return render(request, 'posts/baseLine.html', {'name': 'thread'})
+def thread(request, pId):
+    post = Post.objects.get(pk = pId)
+    return render(request, 'posts/thread.html', {'name': 'thread', 'pId': pId, 'post': post})

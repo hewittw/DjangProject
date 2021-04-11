@@ -30,11 +30,18 @@
     <h2> {{ bodys1 }} </h2>
     <h2> {{ allPosts }} </h2>
 
+    <a href="/stream">stream link</a>
+
     {% for pst in allPosts %}
       <li>{{ pst }}</li>
       <li>{{ pst.body }}</li>
+      <li>{{ pst.id }}</li>
+      <li>
+        <a href="/thread/{{ pst.id }}">test link</a>
+      </li>
       <h4> here </h4>
     {% endfor %}
+    <a href="/thread/1">text</a>
 
   </body>
 
