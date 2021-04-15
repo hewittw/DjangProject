@@ -1,7 +1,7 @@
 <html lang="en-US">
   <head>
 
-    <title>{{ name }}</title> 
+    <title>{{ name }}</title>
 
     <meta http-equiv="refresh" content="300" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -31,19 +31,14 @@
       <a href="/">Index Link</a>
     </button>
 
-    {% for pst in allPosts %}
-      <div class="card">
-        <div class="card-body bg-dark">
-          <h5 class="card-title text-primary">{{ pst.title }}</h5>
-          <h6 class="card-title">
-            <a href="/profile/{{ pst.userPosted.id }}" class="btn btn-primary">{{ pst.userPosted }}</a>
-          </h6>
-          <p class="card-text">{{ pst.body }}</p>
-          <a href="/thread/{{ pst.id }}" class="btn btn-primary">Go to post</a>
-        </div>
+    <div class="card">
+      <div class="card-body bg-dark">
+        <!-- <img src="profile.profilepic" alt="Profile Picture"> --> <!-- doesn't work right yet - will work on as we do more-->
+        <h5 class="card-title text-primary"> {{profile.user}} </h5>
+        <h5 class="card-title text-primary">Bio: {{ profile.bio }}</h5>
+        <a href="/stream" class="btn btn-primary">Back to Stream</a>
       </div>
-    {% endfor %}
-
+    </div>
 
   </body>
 

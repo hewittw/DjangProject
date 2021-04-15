@@ -1,8 +1,45 @@
-{{pId}}
+<html lang="en-US">
+  <head>
 
-<li>{{ post }}</li>
-<li>{{ post.body }}</li>
-<li>{{ post.id }}</li>
+    <title>{{ name }}</title> 
 
+    <meta http-equiv="refresh" content="300" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8" />
 
-<a href="/">index link</a>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- <link rel="stylesheet" href="aboutLaxStyle.css" /> -->
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'posts/t1.css' %}">
+
+  </head>
+  <body class="laxBallBackground">
+    <h1>{{ name }}</h1>
+
+    <button type="button" class="btn btn-dark">
+      <a href="/">Index Link</a>
+    </button>
+
+    <div class="card">
+      <div class="card-body bg-dark">
+        <h5 class="card-title text-primary">{{ pst.title }}</h5>
+        <h6 class="card-title">{{ pst.userPosted }}</h6>
+        <p class="card-text">{{ pst.body }}</p>
+        <a href="/stream" class="btn btn-primary">Back to Stream</a>
+      </div>
+    </div>
+
+  </body>
+
+</html>
