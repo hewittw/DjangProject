@@ -1,7 +1,7 @@
 <html lang="en-US">
   <head>
 
-    <title>{{ name }}</title> 
+    <title>{{ name }}</title>
 
     <meta http-equiv="refresh" content="300" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -30,6 +30,15 @@
     <button type="button" class="btn btn-dark">
       <a href="/">Index Link</a>
     </button>
+
+    <form method="get"> <!-- action = same page method = Get for now -->
+      <label for="postTitle">Post Title:</label><br>
+      <input type="text" id="postTitle" name="postTitle"><br>
+      <label for="text">text:</label><br>
+      <input type="text" id="text" name="text">
+      <input type="submit" value="Submit">
+    </form>
+
 
     {% for pst in allPosts %}
       <div class="card">

@@ -22,6 +22,8 @@ def stream(request):
     This is the main page of Hewdit. Think of it like a for you page or main stream of posts.
     """
     allPosts = Post.objects.order_by('-date')
+    print(request.GET)
+    print("here")
     return render(request, 'posts/stream.html', {'name': 'stream', "allPosts": allPosts})
 
 def thread(request, pId):
