@@ -54,6 +54,8 @@ def stream(request):
     """
     This is the main page of Hewdit. Think of it like a for you page or main stream of posts.
     """
+    if request.user.is_authenticated != True:
+        return redirect('/posts/')
     if request.method == 'POST':
         allProfiles = Profile.objects.all()
         print(request.POST)
@@ -73,6 +75,8 @@ def thread(request, pId):
     """
     This view allows the user to specifically view just one post. Does not display comments yet.
     """
+    if request.user.is_authenticated != True:
+        return redirect('/posts/')
     post = Post.objects.get(pk = pId)
     return render(request, 'posts/thread.html', {'name': 'thread', 'pId': pId, 'pst': post})
 
@@ -80,5 +84,7 @@ def profile(request, profileId):
     """
     This view is like a user's profile page. Right now it just displays their profile pic and bio
     """
+    if request.user.is_authenticated != True:
+        return redirect('/posts/')
     profile = Profile.objects.get(pk = profileId)
     return render(request, 'posts/profile.html', {'name': 'profile', 'pId': profileId, 'profile': profile})
