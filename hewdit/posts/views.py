@@ -4,6 +4,9 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from .models import Post, Profile
+import datetime
+
+# swtich to class based views
 
 def index(request):
     """
@@ -17,13 +20,28 @@ def index(request):
         bodys.append(allPosts[i].body)
     return render(request, 'posts/baseLine.html', {'name': 'Index', 'bodys1': bodys, "allPosts": allPosts})
 
+# class IndexView():
+#     template_name = "posts/baseLine.html"
+#     model = Post
+#     context_object_name = "posts"
+
 def stream(request):
     """
     This is the main page of Hewdit. Think of it like a for you page or main stream of posts.
     """
+    if request.method == 'POST':
+        allProfiles = Profile.objects.all()
+        print(request.POST)
+        print("here")
+        newPost = Post( title = request.POST['postTitle'],
+                        body = request.POST['text'],
+                        date = datetime.datetime.today(),
+                        parent = None,
+                        userPosted = allProfiles[0].user,
+                        likes = 0)
+        newPost.save()
+    # get is used naturally
     allPosts = Post.objects.order_by('-date')
-    print(request.GET)
-    print("here")
     return render(request, 'posts/stream.html', {'name': 'stream', "allPosts": allPosts})
 
 def thread(request, pId):

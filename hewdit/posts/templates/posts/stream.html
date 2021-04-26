@@ -31,7 +31,8 @@
       <a href="/">Index Link</a>
     </button>
 
-    <form method="get"> <!-- action = same page method = Get for now -->
+    <form method="post"> <!-- action = same page method = Get for now -->
+      {% csrf_token %}
       <label for="postTitle">Post Title:</label><br>
       <input type="text" id="postTitle" name="postTitle"><br>
       <label for="text">text:</label><br>
