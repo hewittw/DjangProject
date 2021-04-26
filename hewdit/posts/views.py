@@ -60,13 +60,17 @@ def stream(request):
         allProfiles = Profile.objects.all()
         print(request.POST)
         print("here")
-        newPost = Post( title = request.POST['postTitle'],
-                        body = request.POST['text'],
-                        date = datetime.datetime.today(),
-                        parent = None,
-                        userPosted = request.user,
-                        likes = 0)
-        newPost.save()
+        try:
+            newPost = Post( title = request.POST['postTitle'],
+                          body = request.POST['text'],
+                          date = datetime.datetime.today(),
+                          parent = None,
+                          userPosted = request.user,
+                          likes = 0)
+            newPost.save()
+        except:
+            print("An exception occurred")
+
     # get is used naturally
     allPosts = Post.objects.order_by('-date')
     return render(request, 'posts/stream.html', {'name': 'stream', "allPosts": allPosts})
