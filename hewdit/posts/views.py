@@ -34,7 +34,7 @@ def index(request):
                 pass
                 # Message for failed login.
         # This tests if the form is the log *out* form
-        elif 'logout' in request.POST.keys():
+        else:
             # If so, don't need to check anything else, just kill the session.
             logout(request)
 
