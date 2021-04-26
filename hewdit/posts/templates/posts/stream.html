@@ -27,26 +27,35 @@
   <body class="laxBallBackground">
     <h1>{{ name }}</h1>
 
-    <div class="card">
-      <div class="card-header">
-        Make a new post
-      </div>
-      <div class="card-body">
-        <h5 class="card-title">What are you thinking today?</h5>
-        <form method="post"> <!-- action = same page method = Get for now -->
-          {% csrf_token %}
-          <label for="postTitle">Post Title:</label><br>
-          <input type="text" id="postTitle" name="postTitle"><br>
-          <label for="text">text:</label><br>
-          <input type="text" id="text" name="text">
-        <br></br><input type="submit" value="Submit">
-        </form>
+
+    <p>
+      <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+        Make a new Post
+      </button>
+    </p>
+    <div class="collapse" id="collapseExample">
+      <div class="card">
+        <div class="card-header">
+          Make a new post
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">What are you thinking today?</h5>
+          <form method="post"> <!-- action = same page method = Get for now -->
+            {% csrf_token %}
+            <label for="postTitle">Post Title:</label><br>
+            <input type="text" id="postTitle" name="postTitle"><br>
+            <label for="text">text:</label><br>
+            <input type="text" id="text" name="text">
+          <br></br><input type="submit" value="Submit">
+          </form>
+        </div>
       </div>
     </div>
 
+
     <br><form action="/posts/" method="post"> <!-- action = same page method = Get for now -->
       {% csrf_token %}
-      <input type="submit" value="Log out"> <!-- this must post to the index url -->
+      <button class="btn btn-primary">Log out</button><!-- this must post to the index url -->
     </form>
 
 
