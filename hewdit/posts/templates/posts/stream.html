@@ -40,6 +40,12 @@
       <input type="submit" value="Submit">
     </form>
 
+    <form method="post"> <!-- action = same page method = Get for now -->
+      {% csrf_token %}
+      <input type="submit" value="Log out"> <!-- this must post to the index url -->
+    </form>
+
+
 
     {% for pst in allPosts %}
       <div class="card">

@@ -31,59 +31,30 @@
     <div class="container">
       <h1>Hewdit is better than Reddit!</h1>
 
-      <!-- Here, we check if someone is logged in or not.  I created the
-        'loggedIn' variable as a Boolean flag: it is easy to check in Python,
-        a little less obvious how to do so in the HTML template.  -->
-      {% if loggedIn %}
+      <!-- Again, use POST method, and include a csrf_token -->
+      <form style="padding-bottom:1em;" method="POST">
+        {% csrf_token %}
 
-        <!-- If someone is logged in, we welocme them and give them <thead>
-          opportunity to log out. -->
-        <h3>Welcome, {{ user.first_name }} {{ user.last_name }}</h3>
+        <!-- Give the user a place to type in their name and passowrd. -->
+        <div class="form-group">
+          <label for="inputUsername">Username</label>
+          <input type="text" class="form-control" name="inputUsername" id="inputUsername" />
+        </div>
 
-        <!-- Use POST for sure any time you are dealing with login/logout info.
-          In general, you should use POST unless you have a good reason not to.
-          The main reason to use GET instead is if you want the input data to be
-          transfereable in the URL; GET puts all data submissions in the URL. -->
-        <form style="padding-bottom:1em;" method="POST">
-          <!-- Every <form> element needs a csrf_token as a security precaution. -->
-          {% csrf_token %}
-          <!-- I use the hidden input element to send along the information that
-            we are logging out. -->
-          <input type="hidden" name="logout" value="logout"></input>
-          <button type="submit" class="btn btn-danger">Logout</button>
-        </form>
+        <!-- Notice that we use password as the <input> type so that it blocks
+          out the characters as you type; otherwise, it is just a text box. -->
+        <div class="form-group">
+          <label for="inputPassword">Password</label>
+          <input type="password" class="form-control" name="inputPassword" id="inputPassword" />
+        </div>
 
-        <a href="{% url 'usernamepage' user.username %}">
-          <button type="submit" class="btn btn-primary">
-            Go To My Home Page
-          </button>
-        </a>
-      <!-- If no user is logged in, give them a chance to do so. -->
-      {% else %}
+        <!-- Bootstrap likes <button> elements with type="submit" instead
+          <input> elements with type="submit" -->
+        <button type="submit" class="btn btn-danger">Login</button>
+      </form>
 
-        <!-- Again, use POST method, and include a csrf_token -->
-        <form style="padding-bottom:1em;" method="POST">
-          {% csrf_token %}
-
-          <!-- Give the user a place to type in their name and passowrd. -->
-          <div class="form-group">
-            <label for="inputUsername">Username</label>
-            <input type="text" class="form-control" name="inputUsername" id="inputUsername" />
-          </div>
-
-          <!-- Notice that we use password as the <input> type so that it blocks
-            out the characters as you type; otherwise, it is just a text box. -->
-          <div class="form-group">
-            <label for="inputPassword">Password</label>
-            <input type="password" class="form-control" name="inputPassword" id="inputPassword" />
-          </div>
-
-          <!-- Bootstrap likes <button> elements with type="submit" instead
-            <input> elements with type="submit" -->
-          <button type="submit" class="btn btn-danger">Login</button>
-        </form>
-      {% endif %}
-      <!-- End login/logout section. -->
+        <!-- End login/logout section. -->
     </div>
+  </body>
 
 </html>
