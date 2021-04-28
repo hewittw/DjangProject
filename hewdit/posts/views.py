@@ -26,7 +26,7 @@ def index(request):
         if 'inputUsername' in request.POST.keys():
             # IF so, try to authentircate
             user = authenticate(username=request.POST['inputUsername'],
-                password=request.POST['inputPassword'])
+                   password=request.POST['inputPassword'])
             if user is not None:
                 # IF success, then use the login function so the session persists.
                 login(request, user)
@@ -63,7 +63,8 @@ def stream(request):
         try:
             newPost = Post( title = request.POST['postTitle'],
                           body = request.POST['text'],
-                          date = datetime.datetime.today(),
+                          #date = datetime.datetime.today(),
+                          date = request.POST['date'],
                           parent = None,
                           userPosted = request.user,
                           likes = 0)

@@ -45,7 +45,9 @@
             <label for="postTitle">Post Title:</label><br>
             <input type="text" id="postTitle" name="postTitle"><br>
             <label for="text">text:</label><br>
-            <input type="text" id="text" name="text">
+            <input type="text" id="text" name="text"><br>
+            <label for="text">Datetime posted:</label><br>   <!-- what is the correct entry for the for field-->
+            <input type="datetime-local" id="date" name="date">
           <br></br><input type="submit" value="Submit">
           </form>
         </div>
@@ -67,6 +69,7 @@
           <h6 class="card-title">
             <a href="/profile/{{ pst.userPosted.id }}" class="btn btn-primary">{{ pst.userPosted }}</a>
           </h6>
+          <p class="card-text">Date Posted: {{ pst.date }}</p>
           <p class="card-text">{{ pst.body }}</p>
           <a href="/thread/{{ pst.id }}" class="btn btn-primary">Go to post</a>
         </div>
