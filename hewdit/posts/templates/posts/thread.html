@@ -27,7 +27,11 @@
   <body class="laxBallBackground">
     <h1>{{ name }}</h1>
 
-
+    <br><form action="/posts/" method="post"> <!-- action = same page method = Get for now -->
+      {% csrf_token %}
+      <button class="btn btn-primary">Log out</button><!-- this must post to the index url -->
+    </form>
+    
     <div class="card">
       <div class="card-body bg-dark">
         <h5 class="card-title text-primary">{{ pst.title }}</h5>
