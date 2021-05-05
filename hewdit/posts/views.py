@@ -83,7 +83,10 @@ def thread(request, pId):
     if request.user.is_authenticated != True:
         return redirect('/posts/')
     post = Post.objects.get(pk = pId)
-    return render(request, 'posts/thread.html', {'name': 'thread', 'pId': pId, 'pst': post})
+    allComments = Post.objects.filter(parent=post) # use the filter 
+
+    print(allComments)
+    return render(request, 'posts/thread.html', {'name': 'thread', 'pId': pId, 'pst': post, 'allComments': allComments})
 
 def profile(request, profileId):
     """

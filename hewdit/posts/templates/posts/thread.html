@@ -31,15 +31,28 @@
       {% csrf_token %}
       <button class="btn btn-primary">Log out</button><!-- this must post to the index url -->
     </form>
-    
+
     <div class="card">
       <div class="card-body bg-dark">
         <h5 class="card-title text-primary">{{ pst.title }}</h5>
-        <h6 class="card-title">{{ pst.userPosted }}</h6>
-        <p class="card-text">{{ pst.body }}</p>
+        <h6 class="card-title text-light">{{ pst.userPosted }}</h6>
+        <p class="card-text text-light">{{ pst.body }}</p>
         <a href="/stream" class="btn btn-primary">Back to Stream</a>
       </div>
     </div>
+
+    {% for comment in allComments %}
+      <div class="card">
+        <div class="card-body bg-secondary">
+          <h5 class="card-title text-light">{{ comment.title }}</h5>
+          <h6 class="card-title text-light">
+            <a href="/profile/{{ pst.userPosted.id }}" class="btn btn-primary">{{ comment.userPosted }}</a>
+          </h6>
+          <p class="card-text text-light">Date Posted: {{ comment.date }}</p>
+          <p class="card-text text-light">{{ comment.body }}</p>
+        </div>
+      </div>
+    {% endfor %}
 
   </body>
 
