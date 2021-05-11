@@ -85,6 +85,23 @@ def thread(request, pId):
     post = Post.objects.get(pk = pId)
     allComments = Post.objects.filter(parent=post) # use the filter
 
+    if request.method == 'POST':
+        allProfiles = Profile.objects.all()
+        print(request.POST)
+        print("here")
+        try:
+            newComment = Post( title = "comment",
+                          body = request.POST['text'],
+                          date = datetime.datetime.today(),
+                          #date = request.POST['date'],
+                          parent = post,
+                          userPosted = request.user,
+                          likes = 0)
+            newComment.save()
+        except:
+            print("An exception occurred")
+
+
     print(allComments)
     return render(request, 'posts/thread.html', {'name': 'thread', 'pId': pId, 'pst': post, 'allComments': allComments})
 

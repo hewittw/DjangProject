@@ -32,6 +32,32 @@
       <button class="btn btn-primary">Log out</button><!-- this must post to the index url -->
     </form>
 
+    <p>
+      <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+        Make a Comment
+      </button>
+    </p>
+    <div class="collapse" id="collapseExample">
+      <div class="card">
+        <div class="card-header">
+          Make a new Comment
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">How do you feel about this Post?</h5>
+          <form method="post"> <!-- action = same page method = Get for now -->
+            {% csrf_token %}
+            <!-- <label for="postTitle">Post Title:</label><br>
+            <input type="text" id="postTitle" name="postTitle"><br> -->
+            <label for="text">text:</label><br>
+            <input type="text" id="text" name="text"><br>
+            <label for="text">Datetime posted:</label><br>   <!-- what is the correct entry for the for field-->
+            <input type="datetime-local" id="date" name="date">
+          <br></br><input type="submit" value="Submit">
+          </form>
+        </div>
+      </div>
+    </div>
+
     <div class="card">
       <div class="card-body bg-dark">
         <h5 class="card-title text-primary">{{ pst.title }}</h5>
@@ -44,12 +70,11 @@
     {% for comment in allComments %}
       <div class="card">
         <div class="card-body bg-secondary">
-          <h5 class="card-title text-light">{{ comment.title }}</h5>
           <h6 class="card-title text-light">
             <a href="/profile/{{ pst.userPosted.id }}" class="btn btn-primary">{{ comment.userPosted }}</a>
           </h6>
-          <p class="card-text text-light">Date Posted: {{ comment.date }}</p>
           <p class="card-text text-light">{{ comment.body }}</p>
+          <p class="card-text text-light">Date Posted: {{ comment.date }}</p>
         </div>
       </div>
     {% endfor %}
