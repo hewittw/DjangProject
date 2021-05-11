@@ -29,3 +29,6 @@ class Profile(models.Model):
     bio = models.CharField(max_length=200, default="")
     profilePic = models.ImageField(upload_to=None, height_field=None, width_field=None, max_length=100)
     # profile pic does not display correctly yet in the template - another thing I will work on later
+
+    def getUser(self):
+        return self.user

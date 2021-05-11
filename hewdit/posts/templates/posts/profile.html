@@ -31,7 +31,7 @@
       {% csrf_token %}
       <button class="btn btn-primary">Log out</button><!-- this must post to the index url -->
     </form>
-    
+
     <div class="card">
       <div class="card-body bg-dark">
         <!-- <img src="profile.profilepic" alt="Profile Picture"> --> <!-- doesn't work right yet - will work on as we do more-->
@@ -40,6 +40,22 @@
         <a href="/stream" class="btn btn-primary">Back to Stream</a>
       </div>
     </div>
+
+    <h2>Their Posts</h2>
+
+    {% for pst in allPosts %}
+      <div class="card">
+        <div class="card-body bg-dark">
+          <h5 class="card-title text-primary">{{ pst.title }}</h5>
+          <h6 class="card-title">
+            <a href="/profile/{{ pst.userPosted.id }}" class="btn btn-primary">{{ pst.userPosted }}</a>
+          </h6>
+          <p class="card-text text-light">Date Posted: {{ pst.date }}</p>
+          <p class="card-text text-light">{{ pst.body }}</p>
+          <a href="/thread/{{ pst.id }}" class="btn btn-primary">Go to post</a>
+        </div>
+      </div>
+    {% endfor %}
 
   </body>
 

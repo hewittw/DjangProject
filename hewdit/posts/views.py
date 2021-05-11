@@ -63,8 +63,8 @@ def stream(request):
         try:
             newPost = Post( title = request.POST['postTitle'],
                           body = request.POST['text'],
-                          #date = datetime.datetime.today(),
-                          date = request.POST['date'],
+                          date = datetime.datetime.today(),
+                          #date = request.POST['date'],
                           parent = None,
                           userPosted = request.user,
                           likes = 0)
@@ -73,7 +73,7 @@ def stream(request):
             print("An exception occurred")
 
     # get is used naturally
-    allPosts = Post.objects.order_by('-date')
+    allPosts = Post.objects.filter(parent=None) # making sure only posts, not comments displayed
     return render(request, 'posts/stream.html', {'name': 'stream', "allPosts": allPosts})
 
 def thread(request, pId):
@@ -83,7 +83,7 @@ def thread(request, pId):
     if request.user.is_authenticated != True:
         return redirect('/posts/')
     post = Post.objects.get(pk = pId)
-    allComments = Post.objects.filter(parent=post) # use the filter 
+    allComments = Post.objects.filter(parent=post) # use the filter
 
     print(allComments)
     return render(request, 'posts/thread.html', {'name': 'thread', 'pId': pId, 'pst': post, 'allComments': allComments})
@@ -95,4 +95,5 @@ def profile(request, profileId):
     if request.user.is_authenticated != True:
         return redirect('/posts/')
     profile = Profile.objects.get(pk = profileId)
-    return render(request, 'posts/profile.html', {'name': 'profile', 'pId': profileId, 'profile': profile})
+    allPosts = Post.objects.filter(userPosted=profile.user).filter(parent=None)
+    return render(request, 'posts/profile.html', {'name': 'profile', 'pId': profileId, 'profile': profile, 'allPosts': allPosts})
