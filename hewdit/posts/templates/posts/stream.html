@@ -29,7 +29,7 @@
 
     <script async src="https://cse.google.com/cse.js?cx=0e95cf4a4fd4724a3"></script>
     <div class="gcse-search"></div>
-    
+
     <p>
       <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
         Make a new Post
@@ -47,7 +47,11 @@
             <label for="postTitle">Post Title:</label><br>
             <input type="text" id="postTitle" name="postTitle"><br>
             <label for="text">text:</label><br>
-            <input type="text" id="text" name="text"><br>
+            <input type="text" id="text" name="text"><br></br>
+
+            <label for="img">Select image:</label><br>
+            <input type="file" id="img" name="img" accept="image/*"><br></br>
+
             <label for="text">Datetime posted:</label><br>   <!-- what is the correct entry for the for field-->
             <input type="datetime-local" id="date" name="date">
           <br></br><input type="submit" value="Submit">
@@ -72,6 +76,8 @@
             <a href="/profile/{{ pst.userPosted.id }}" class="btn btn-primary">{{ pst.userPosted }}</a>
           </h6>
           <p class="card-text text-light">Date Posted: {{ pst.date }}</p>
+
+
           <p class="card-text text-light">{{ pst.body }}</p>
           <a href="/thread/{{ pst.id }}" class="btn btn-primary">Go to post</a>
         </div>

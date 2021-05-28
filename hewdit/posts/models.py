@@ -17,6 +17,7 @@ class Post(models.Model):
                                 blank=True)
     userPosted = models.ForeignKey(User, on_delete=models.CASCADE) # maybe change this to the profile - need to make this decision
     likes = models.IntegerField(blank=True, null=True) # not using yet in templates - will implement later
+    image = models.ImageField(blank=True, null=True)
 
     # plan to define a string method that names it correclty in the admin interface - use the pk attribute
 

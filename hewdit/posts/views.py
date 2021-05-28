@@ -56,6 +56,7 @@ def stream(request):
     """
     if request.user.is_authenticated != True:
         return redirect('/posts/')
+
     if request.method == 'POST':
         allProfiles = Profile.objects.all()
         print(request.POST)
@@ -67,7 +68,8 @@ def stream(request):
                           #date = request.POST['date'],
                           parent = None,
                           userPosted = request.user,
-                          likes = 0)
+                          likes = 0,
+                          image = request.POST['img'])
             newPost.save()
         except:
             print("An exception occurred")
@@ -84,6 +86,11 @@ def thread(request, pId):
         return redirect('/posts/')
     post = Post.objects.get(pk = pId)
     allComments = Post.objects.filter(parent=post) # use the filter
+
+    subComments = []
+    for comment in allComments:
+        subComment = Post.objects.filter(parent=comment)
+        subComments.append(subComment)
 
     if request.method == 'POST':
         allProfiles = Profile.objects.all()
@@ -103,7 +110,7 @@ def thread(request, pId):
 
 
     print(allComments)
-    return render(request, 'posts/thread.html', {'name': 'thread', 'pId': pId, 'pst': post, 'allComments': allComments})
+    return render(request, 'posts/thread.html', {'name': 'thread', 'pId': pId, 'pst': post, 'allComments': allComments, 'subComments': subComments})
 
 def profile(request, profileId):
     """
