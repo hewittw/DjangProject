@@ -7,4 +7,5 @@ urlpatterns = [
     path('stream', views.stream, name='stream'),
     path('thread/<int:pId>', views.thread, name='thread'),
     path('profile/<int:profileId>', views.profile, name='profile'),
+    path('createProfile', views.createProfile, name='createProfile'),
 ]

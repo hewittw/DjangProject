@@ -121,3 +121,25 @@ def profile(request, profileId):
     profile = Profile.objects.get(pk = profileId)
     allPosts = Post.objects.filter(userPosted=profile.user).filter(parent=None)
     return render(request, 'posts/profile.html', {'name': 'profile', 'pId': profileId, 'profile': profile, 'allPosts': allPosts})
+
+
+def createProfile(request):
+    if request.user.is_authenticated:
+        return redirect('/posts/stream')
+
+    message = "welcome to the creating profile page"
+
+    if request.method == 'POST':
+        try:
+            user = authenticate(username = request.POST['username'],
+                                email = request.POST['email'],
+                                password = request.POST['password'],)
+            login(request, user) # automatic login
+
+            newProfile = Profile(user = user,
+                                 bio = request.POST['bio'], )
+            newProfile.save()
+        except:
+            print("An exception occurred")
+
+    return render(request, 'posts/createProfile.html', {'name': 'Create Profile'})
