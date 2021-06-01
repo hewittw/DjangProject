@@ -129,17 +129,16 @@ def createProfile(request):
 
     message = "welcome to the creating profile page"
 
-    if request.method == 'POST':
-        try:
-            user = authenticate(username = request.POST['username'],
-                                email = request.POST['email'],
-                                password = request.POST['password'],)
-            login(request, user) # automatic login
+    if request.POST:
+        print("createProfile post triggered")
+        newUser = User.objects.create_user(username = request.POST['username'],
+                            email = request.POST['email'],
+                            password = request.POST['password'],)
+        login(request, newUser) # automatic login - should go straight to stream ???
 
-            newProfile = Profile(user = user,
-                                 bio = request.POST['bio'], )
-            newProfile.save()
-        except:
-            print("An exception occurred")
+        newProfile = Profile(user = newUser,
+                             bio = request.POST['bio'], )
+        newProfile.save()
+
 
     return render(request, 'posts/createProfile.html', {'name': 'Create Profile'})
