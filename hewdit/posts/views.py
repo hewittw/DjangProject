@@ -78,6 +78,20 @@ def stream(request):
     allPosts = Post.objects.filter(parent=None) # making sure only posts, not comments displayed
     return render(request, 'posts/stream.html', {'name': 'stream', "allPosts": allPosts})
 
+
+def traverseComments(pId, lvl):
+    post = Post.objects.get(pk = pId)
+    allComments = Post.objects.filter(parent=post) # use the filter
+    commentLst = []
+    for comment in allComments:
+        commentLst.append({'comment': comment,
+                            'lvl': lvl, })
+        commentLst += (traverseComments(comment.id, lvl+1))
+    return commentLst
+
+
+
+
 def thread(request, pId):
     """
     This view allows the user to specifically view just one post. Does not display comments yet.
@@ -85,12 +99,9 @@ def thread(request, pId):
     if request.user.is_authenticated != True:
         return redirect('/posts/')
     post = Post.objects.get(pk = pId)
-    allComments = Post.objects.filter(parent=post) # use the filter
+    commentLst = traverseComments(pId, 0)
+    print(commentLst)
 
-    subComments = []
-    for comment in allComments:
-        subComment = Post.objects.filter(parent=comment)
-        subComments.append(subComment)
 
     if request.method == 'POST':
         allProfiles = Profile.objects.all()
@@ -109,8 +120,7 @@ def thread(request, pId):
             print("An exception occurred")
 
 
-    print(allComments)
-    return render(request, 'posts/thread.html', {'name': 'thread', 'pId': pId, 'pst': post, 'allComments': allComments, 'subComments': subComments})
+    return render(request, 'posts/thread.html', {'name': 'thread', 'pId': pId, 'pst': post, 'commentLst': commentLst})
 
 def profile(request, profileId):
     """
@@ -118,8 +128,16 @@ def profile(request, profileId):
     """
     if request.user.is_authenticated != True:
         return redirect('/posts/')
+
+
+
     profile = Profile.objects.get(pk = profileId)
     allPosts = Post.objects.filter(userPosted=profile.user).filter(parent=None)
+
+    if request.POST:
+        if profile.user == request.user:
+            profile.bio = request.POST['bio']
+
     return render(request, 'posts/profile.html', {'name': 'profile', 'pId': profileId, 'profile': profile, 'allPosts': allPosts})
 
 

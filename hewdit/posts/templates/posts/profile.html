@@ -41,6 +41,30 @@
       </div>
     </div>
 
+    <p>
+      <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+        Update bio
+      </button>
+    </p>
+    <div class="collapse" id="collapseExample">
+      <div class="card">
+        <div class="card-header">
+          Edit Bio
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">What's your theme today?</h5>
+          <form method="post"> <!-- action = same page method = Get for now -->
+            {% csrf_token %}
+
+            <label for="bio">Bio:</label><br>
+            <input type="text" id="bio" name="bio"><br></br>
+
+          <br></br><input type="submit" value="Submit">
+          </form>
+        </div>
+      </div>
+    </div>
+
     <h2>Their Posts</h2>
 
     {% for pst in allPosts %}
@@ -56,6 +80,8 @@
         </div>
       </div>
     {% endfor %}
+
+
 
   </body>
 

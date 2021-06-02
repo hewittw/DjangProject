@@ -67,14 +67,15 @@
       </div>
     </div>
 
-    {% for comment in allComments %}
+    {% for comment in commentLst %}
       <div class="card">
         <div class="card-body bg-secondary">
           <h6 class="card-title text-light">
-            <a href="/profile/{{ pst.userPosted.id }}" class="btn btn-primary">{{ comment.userPosted }}</a>
+            <a href="/profile/{{ pst.userPosted.id }}" class="btn btn-primary">{{ comment.comment.userPosted }}</a>
           </h6>
-          <p class="card-text text-light">{{ comment.body }}</p>
-          <p class="card-text text-light">Date Posted: {{ comment.date }}</p>
+          <p class="card-text text-light">{{ comment.comment.body }}</p>
+          <p class="card-text text-light">Date Posted: {{ comment.comment.date }}</p>
+          <p class="card-text text-light">Lvl: {{ comment.lvl }}</p>
         </div>
       </div>
     {% endfor %}
