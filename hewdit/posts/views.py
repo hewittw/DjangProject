@@ -68,11 +68,11 @@ def stream(request):
                           #date = request.POST['date'],
                           parent = None,
                           userPosted = request.user,
-                          likes = 0,
-                          image = request.POST['img'])
+                          likes = 0, )
             newPost.save()
         except:
             print("An exception occurred")
+        return redirect('/posts/stream')
     currentUser = request.user
 
     # get is used naturally
@@ -145,6 +145,7 @@ def profile(request, profileId):
     if request.POST:
         if profile.user == request.user:
             profile.bio = request.POST['bio']
+            #return redirect('/posts/') -------- get this one working!!!
 
     return render(request, 'posts/profile.html', {'name': 'profile', 'pId': profileId, 'profile': profile, 'allPosts': allPosts})
 
@@ -165,6 +166,7 @@ def createProfile(request):
         newProfile = Profile(user = newUser,
                              bio = request.POST['bio'], )
         newProfile.save()
+        return redirect('/posts/')
 
 
     return render(request, 'posts/createProfile.html', {'name': 'Create Profile'})
