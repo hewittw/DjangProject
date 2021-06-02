@@ -73,10 +73,11 @@ def stream(request):
             newPost.save()
         except:
             print("An exception occurred")
+    currentUser = request.user
 
     # get is used naturally
     allPosts = Post.objects.filter(parent=None) # making sure only posts, not comments displayed
-    return render(request, 'posts/stream.html', {'name': 'stream', "allPosts": allPosts})
+    return render(request, 'posts/stream.html', {'name': 'stream', "allPosts": allPosts, 'currentUser': currentUser})
 
 
 def traverseComments(pId, lvl):
@@ -96,28 +97,35 @@ def thread(request, pId):
     """
     This view allows the user to specifically view just one post. Does not display comments yet.
     """
+
     if request.user.is_authenticated != True:
         return redirect('/posts/')
     post = Post.objects.get(pk = pId)
-    commentLst = traverseComments(pId, 0)
-    print(commentLst)
-
 
     if request.method == 'POST':
         allProfiles = Profile.objects.all()
         print(request.POST)
         print("here")
-        try:
-            newComment = Post( title = "comment",
-                          body = request.POST['text'],
-                          date = datetime.datetime.today(),
-                          #date = request.POST['date'],
-                          parent = post,
-                          userPosted = request.user,
-                          likes = 0)
-            newComment.save()
-        except:
-            print("An exception occurred")
+        #-try:
+        if 'pId' in request.POST:
+            parent = Post.objects.get(pk = request.POST['pId'])
+        else:
+            parent = post
+        newComment = Post( title = "comment",
+                      body = request.POST['text'],
+                      date = datetime.datetime.today(),
+                      #date = request.POST['date'],
+                      parent = parent,
+                      userPosted = request.user,
+                      likes = 0)
+        newComment.save() # do this for all of them
+        #except:
+        #print("An exception occurred")
+        return redirect('/posts/thread/' + str(pId))
+
+
+    commentLst = traverseComments(pId, 0)
+    print(commentLst)
 
 
     return render(request, 'posts/thread.html', {'name': 'thread', 'pId': pId, 'pst': post, 'commentLst': commentLst})
