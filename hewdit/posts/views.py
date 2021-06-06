@@ -7,28 +7,27 @@ from .models import Post, Profile
 import datetime
 from django.template import loader
 
-# swtich to class based views
+#------------------------------------------------------------------------------#
 
 def index(request):
     """
-    This will the be the home page view where the user signs in. Currently
-    displays little data as I have not created the forms for the user to login with.
+    Purpose: This is the user login in page. This view is the default view, ie it loads
+    with 'post/'. This view can only be accessed if the user is logged out - this was
+    done on purpose and models instagrams login theory that only a logged-in user
+    can use the site.
+    Parameters: Request (django parameter for view)
+    Returns: An HttpResponse
     """
-    # allPosts = Post.objects.order_by('-date')
-    # print(allPosts[0].body)
-    # bodys = []
-    # for i in range(3):
-    #     bodys.append(allPosts[i].body)
-    # return render(request, 'posts/baseLine.html', {'name': 'Index', 'bodys1': bodys, "allPosts": allPosts})
-# It has forms that redirect to itself, so check if this form data is present
+
+    # if post method is called
     if request.POST:
-        # This tests if the form is the log *in* form
+        #
         if 'inputUsername' in request.POST.keys():
-            # IF so, try to authentircate
+            #
             user = authenticate(username=request.POST['inputUsername'],
                    password=request.POST['inputPassword'])
             if user is not None:
-                # IF success, then use the login function so the session persists.
+                #
                 login(request, user)
             else:
                 pass
@@ -39,7 +38,7 @@ def index(request):
             logout(request)
 
 
-    # After we chec the forms, set a flag for use in the template.
+    # if user logged-in/is logged-in go to stream view
     if request.user.is_authenticated:
         return redirect('/posts/stream')
     # Find the template
@@ -49,68 +48,129 @@ def index(request):
 
     return HttpResponse(template.render(context, request))
 
+#------------------------------------------------------------------------------#
+
+def createProfile(request):
+    """
+    Purpose: This view allows a new user to create a profile so they can access
+    the site.
+    Parameters: request (django parameter)
+    Returns: A render call that is passed the createProfile.html
+    """
+    # see if user is logged-in
+    if request.user.is_authenticated:
+        return redirect('/posts/stream')
+
+    # if post method is called
+    if request.POST:
+        # create new user using the data entered
+        newUser = User.objects.create_user(username = request.POST['username'],
+                            email = request.POST['email'],
+                            password = request.POST['password'],)
+
+        # create profile that corresponds to user - have a 1:1 relationship
+        newProfile = Profile(user = newUser,
+                             bio = request.POST['bio'], )
+        newProfile.save()
+
+        login(request, newUser) # automatic login
+        return redirect('/posts/') # go to stream because logged-in
+        
+    return render(request, 'posts/createProfile.html', {'name': 'Create Profile'})
+
+#------------------------------------------------------------------------------#
 
 def stream(request):
     """
-    This is the main page of Hewdit. Think of it like a for you page or main stream of posts.
+    Purpose: This is the main page of Hewdit. Think of it like a for you page
+    or main stream of posts. Also, let the user create posts.
+    Parameters: Request (django parameter for view)
+    Returns: A render call that is passed the stream.html template and all the post
+    and user information needed to generate the stream page.
     """
+    # if user is not logged-in, go to index
     if request.user.is_authenticated != True:
         return redirect('/posts/')
 
+    # if post method is called
     if request.method == 'POST':
         allProfiles = Profile.objects.all()
-        print(request.POST)
-        print("here")
         try:
+            # create a new post using UTC time and data that the user inputted
             newPost = Post( title = request.POST['postTitle'],
                           body = request.POST['text'],
                           date = datetime.datetime.today(),
-                          #date = request.POST['date'],
                           parent = None,
                           userPosted = request.user,
                           likes = 0, )
             newPost.save()
         except:
+            # in case some error occurs so program doesn't crash - for debugging
             print("An exception occurred")
+
+        # reload the page after post is added so if the user refreshes the page the post is not added to the database twice
         return redirect('/posts/stream')
+
+    # get user so the go-to-profile button can be generated in view
     currentUser = request.user
 
-    # get is used naturally
+    # get all top level posts for stream view
     allPosts = Post.objects.filter(parent=None) # making sure only posts, not comments displayed
     return render(request, 'posts/stream.html', {'name': 'stream', "allPosts": allPosts, 'currentUser': currentUser})
 
+#------------------------------------------------------------------------------#
 
 def traverseComments(pId, lvl):
+    """
+    Purpose: Using a recursive function, create a master list of comments where
+    each index in the list is a dictionary. Each dictionary has two keys and corresponding
+    values: a comment object and its corresponding level - how deep in the sub-comment
+    threat it is.
+    Parameters: The post Id from the top level post that is currently being used in
+    thread view.
+    Returns: commentLst, a master list of dictionries of all the comments for one
+    particular top-level post.
+    """
+    # get the current top level post (changes as the function gets deeper into the comment thread)
     post = Post.objects.get(pk = pId)
-    allComments = Post.objects.filter(parent=post) # use the filter
+    allComments = Post.objects.filter(parent=post) # get all subcomments for post
     commentLst = []
     for comment in allComments:
+        # add all comments in allComments to commentLst in dictionary form
         commentLst.append({'comment': comment,
                             'lvl': lvl, })
+        # make a recursive call to find more subcomments on comments
         commentLst += (traverseComments(comment.id, lvl+1))
+
     return commentLst
-
-
-
 
 def thread(request, pId):
     """
-    This view allows the user to specifically view just one post. Does not display comments yet.
+    Purpose: This is the view in which a user can examine a single post and all the comments
+    associated with that top level post. Also, let the user post comments.
+    Parameters: request (django parameter) and pId (the post Id of the top level post)
+    Returns: A render call that is passed the thread.html template, the top level post,
+    and a master list of all the comments from traverseComments.
     """
 
+    # make sure user is logged-in
     if request.user.is_authenticated != True:
         return redirect('/posts/')
+
+    # get the top level post
     post = Post.objects.get(pk = pId)
 
+    # if post method called
     if request.method == 'POST':
-        allProfiles = Profile.objects.all()
-        print(request.POST)
-        print("here")
-        #-try:
+
         if 'pId' in request.POST:
+            # user is commenting direclty onto post (top level comment)
             parent = Post.objects.get(pk = request.POST['pId'])
         else:
+            # user is commenting onto another comment
             parent = post
+
+        # create new comment using the information provided by user
         newComment = Post( title = "comment",
                       body = request.POST['text'],
                       date = datetime.datetime.today(),
@@ -118,55 +178,44 @@ def thread(request, pId):
                       parent = parent,
                       userPosted = request.user,
                       likes = 0)
-        newComment.save() # do this for all of them
-        #except:
-        #print("An exception occurred")
+        newComment.save()
+
+        # reload the page so if the user refreshes the page a new comment is not added to the database twice
         return redirect('/posts/thread/' + str(pId))
 
-
+    # get master list of all comments
     commentLst = traverseComments(pId, 0)
-    print(commentLst)
-
 
     return render(request, 'posts/thread.html', {'name': 'thread', 'pId': pId, 'pst': post, 'commentLst': commentLst})
 
+#------------------------------------------------------------------------------#
+
 def profile(request, profileId):
     """
-    This view is like a user's profile page. Right now it just displays their profile pic and bio
+    Purpose: This view acts as the profile home page for any user's profile. If
+    the user is logged-in and viewing their profile, extra functionlity is unlocked,
+    like being able to edit their bio.
+    Parameters: request (django parameter) and profileId (so that the profile can
+    be grabbed from the database)
+    Returns: A render call that is passed the profile.html template, the profile being viewed,
+    and all the top level posts posted by the user that corresponds to this profile.
     """
+    # check user is logged-in
     if request.user.is_authenticated != True:
         return redirect('/posts/')
 
-
-
+    # get the profile
     profile = Profile.objects.get(pk = profileId)
+    # get all the top level posts for this profile
     allPosts = Post.objects.filter(userPosted=profile.user).filter(parent=None)
 
+    # if post method called
     if request.POST:
-        if profile.user == request.user:
-            profile.bio = request.POST['bio']
-            #return redirect('/posts/') -------- get this one working!!!
+        if profile.user == request.user: # checked this is the profile of the logged in user
+            profile.bio = request.POST['bio'] # update the user's bio
+
+            #return redirect('/posts/profile/' + str(profileId))  - get this working -- why not work the way you want it to?????
 
     return render(request, 'posts/profile.html', {'name': 'profile', 'pId': profileId, 'profile': profile, 'allPosts': allPosts})
 
-
-def createProfile(request):
-    if request.user.is_authenticated:
-        return redirect('/posts/stream')
-
-    message = "welcome to the creating profile page"
-
-    if request.POST:
-        print("createProfile post triggered")
-        newUser = User.objects.create_user(username = request.POST['username'],
-                            email = request.POST['email'],
-                            password = request.POST['password'],)
-        login(request, newUser) # automatic login - should go straight to stream ???
-
-        newProfile = Profile(user = newUser,
-                             bio = request.POST['bio'], )
-        newProfile.save()
-        return redirect('/posts/')
-
-
-    return render(request, 'posts/createProfile.html', {'name': 'Create Profile'})
+#------------------------------------------------------------------------------#
