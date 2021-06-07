@@ -61,7 +61,7 @@
             <form style="margin-top: 8px;" action="/posts/" method="post"> <!-- Worked on this with dad - I think boostrap has a bug here with its margins after some research
                                                                                 hard to hard code the margins so it looks nice on most buttons in the navbar -->
               {% csrf_token %}
-              <button class="btn btn-secondary">Log out</button><!-- this must post to the index url -->
+              <button class="btn btn-secondary">Log out</button><!-- this posts to the index url (this is how all my log out buttons work)-->
             </form>
           </a>
           </li>

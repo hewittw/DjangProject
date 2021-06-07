@@ -72,7 +72,7 @@
         </div>
         <div class="card-body">
           <h5 class="card-title">What are you thinking today?</h5>
-          <form method="post"> <!-- action = same page method = Get for now -->
+          <form method="post">
             {% csrf_token %}
             <label for="postTitle">Post Title:</label><br>
             <input type="text" id="postTitle" name="postTitle"><br>
@@ -102,7 +102,8 @@
 
     {% endfor %}
 
-    <!-- google search engine api just for fun -->
+    <!--  google search engine api just for fun - doesn't really do anything but fun to have -
+          though I'd leave it in incase the user needs to google something for inspiration :) -->
     <script async src="https://cse.google.com/cse.js?cx=0e95cf4a4fd4724a3"></script>
     <div class="gcse-search"></div>
 

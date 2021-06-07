@@ -21,20 +21,17 @@ def index(request):
 
     # if post method is called
     if request.POST:
-        #
+        # checking to see if user attempted to login
         if 'inputUsername' in request.POST.keys():
-            #
+            # authenticate the user using built in django user functions (so helpful)
             user = authenticate(username=request.POST['inputUsername'],
                    password=request.POST['inputPassword'])
             if user is not None:
-                #
+                # if authenticate worked then login
                 login(request, user)
-            else:
-                pass
-                # Message for failed login.
-        # This tests if the form is the log *out* form
+
         else:
-            # If so, don't need to check anything else, just kill the session.
+            # If nothing, means user is logging out
             logout(request)
 
 
@@ -131,7 +128,7 @@ def traverseComments(pId, lvl):
     values: a comment object and its corresponding level - how deep in the sub-comment
     threat it is.
     Parameters: The post Id from the top level post that is currently being used in
-    thread view.
+    thread view and the lvl (int) of the current post (lvl = position in the layers of comments)
     Returns: commentLst, a master list of dictionries of all the comments for one
     particular top-level post.
     """
@@ -188,7 +185,7 @@ def thread(request, pId):
         return redirect('/posts/thread/' + str(pId))
 
     # get master list of all comments
-    commentLst = traverseComments(pId, 1)
+    commentLst = traverseComments(pId, 1) # the 1 stands for the subcomment lvl starting at 1 - because 1 comment deep (thought 1 made more sense than 0)
 
     # get user so the go-to-profile button can be generated in view
     currentUser = request.user
@@ -221,9 +218,7 @@ def profile(request, profileId):
         if profile.user == request.user: # checked this is the profile of the logged in user
             profile.bio = request.POST['bio'] # update the user's bio
 
-            #return redirect('/posts/profile/' + str(profileId))  - get this working -- why not work the way you want it to?????
-
-
+    # determine if the user is looking at their own profile or not (boolean)
     showEditButton = profile.user == request.user
 
     return render(request, 'posts/profile.html', {'name': 'profile', 'pId': profileId, 'profile': profile, 'allPosts': allPosts, 'showEditButton': showEditButton,})
