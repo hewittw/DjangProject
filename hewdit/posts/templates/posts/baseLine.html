@@ -24,38 +24,28 @@
     <link rel="stylesheet" type="text/css" href="{% static 'posts/t1.css' %}">
 
   </head>
-  <!-- Make the background a very light gray.  -->
   <body>
-
-    <!-- With Bootstrap 4, everything should be in a container. -->
+    
     <div class="container">
       <h1>Reddit 2.0 - Hewitt's version</h1>
 
-      <!-- Again, use POST method, and include a csrf_token -->
+      <!-- form for the user to enter in their username and password to login -->
       <form style="padding-bottom:1em;" method="POST">
         {% csrf_token %}
-
-        <!-- Give the user a place to type in their name and passowrd. -->
         <div class="form-group">
           <label for="inputUsername">Username</label>
           <input type="text" class="form-control" name="inputUsername" id="inputUsername" />
         </div>
-
-        <!-- Notice that we use password as the <input> type so that it blocks
-          out the characters as you type; otherwise, it is just a text box. -->
         <div class="form-group">
           <label for="inputPassword">Password</label>
           <input type="password" class="form-control" name="inputPassword" id="inputPassword" />
         </div>
-
-        <!-- Bootstrap likes <button> elements with type="submit" instead
-          <input> elements with type="submit" -->
         <button type="submit" class="btn btn-danger">Login</button>
       </form>
 
+      <!-- link to create a new profile view -->
       <a href="/createProfile" class="btn btn-primary">Create New Profile</a>
 
-        <!-- End login/logout section. -->
     </div>
   </body>
 

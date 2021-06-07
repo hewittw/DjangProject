@@ -19,7 +19,6 @@
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <!-- <link rel="stylesheet" href="aboutLaxStyle.css" /> -->
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'posts/t1.css' %}">
 
@@ -27,21 +26,19 @@
   <body>
     <h1>{{ name }}</h1>
 
-
+    <!-- button and form to make new account -->
     <p>
       <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
         Make a new Profile
       </button>
     </p>
-
-
     <div class="card">
       <div class="card-header">
         Make a new Profile
       </div>
       <div class="card-body">
         <h5 class="card-title">Let's make an account!</h5>
-        <form method="post"> <!-- action = same page method = Get for now -->
+        <form method="post">
           {% csrf_token %}
 
           <label for="username">Username:</label><br>
@@ -53,7 +50,7 @@
           <label for="bio">Bio:</label><br>
           <input type="text" id="bio" name="bio"><br></br>
 
-          <label for="password">Password:</label><br>
+          <label for="password">Password:</label><br> <!-- use password field to be slightly more secure :) -->
           <input type="password" id="password" name="password"><br></br>
 
         <br></br><input type="submit" value="Submit">
@@ -61,6 +58,7 @@
       </div>
     </div>
 
+    <!-- back to login button -->
     <a href="/" class="btn btn-primary">Back to Login</a>
 
   </body>

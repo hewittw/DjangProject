@@ -19,17 +19,18 @@
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <!-- <link rel="stylesheet" href="aboutLaxStyle.css" /> -->
     {% load static %}
 
     <link rel="stylesheet" type="text/css" href="{% static 'posts/t1.css' %}">
 
+    <!-- load the timezone stuff needed to get the time right -->
     {% load tz %}
 
   </head>
   <body>
     <h1>{{ name }}</h1>
 
+    <!-- navbar setup -->
     <nav class="navbar navbar-expand-lg bg-dark navbar-dark sticky-top" >
       <!-- NavBar Brand -->
       <a class="navbar-brand" href="#Title">
@@ -51,23 +52,21 @@
           <!-- Link 2-->
           <li class="nav-item dropdown">
           <a>
-            <form action="/posts/" method="post"> <!-- action = same page method = Get for now -->
+            <form action="/posts/" method="post">
               {% csrf_token %}
-              <button class="btn btn-primary">Log out</button><!-- this must post to the index url -->
+              <button class="btn btn-primary">Log out</button>
             </form>
           </a>
           </li>
 
         </ul>
       </div>
-
     </nav>
 
-
-      <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-        Make a new Post
-      </button>
-    </p>
+    <!-- button and form for user to make a new post -->
+    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+      Make a new Post
+    </button>
     <div class="collapse" id="collapseExample">
       <div class="card">
         <div class="card-header">
@@ -88,7 +87,7 @@
       </div>
     </div>
 
-
+    <!-- loop through all top level posts and display them -->
     {% for pst in allPosts %}
 
       <div class="card">
@@ -105,9 +104,9 @@
 
     {% endfor %}
 
+    <!-- google search engine api just for fun -->
     <script async src="https://cse.google.com/cse.js?cx=0e95cf4a4fd4724a3"></script>
     <div class="gcse-search"></div>
 
   </body>
-
 </html>

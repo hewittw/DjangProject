@@ -19,16 +19,18 @@
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <!-- <link rel="stylesheet" href="aboutLaxStyle.css" /> -->
+    <!-- load the style sheet -->
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'posts/t1.css' %}">
 
+    <!-- load the time library needed to get correct time -->
     {% load tz %}
 
   </head>
   <body>
     <h1>{{ name }}</h1>
 
+    <!-- setup the navbar -->
     <nav class="navbar navbar-expand-lg bg-dark navbar-dark sticky-top" >
       <!-- NavBar Brand -->
       <a class="navbar-brand" href="#Title">
@@ -64,10 +66,9 @@
 
         </ul>
       </div>
-
     </nav>
 
-
+    <!-- main post -->
     <div class="card">
       <div class="card-body bg-dark">
         <h5 class="card-title text-primary">{{ pst.title }}</h5>
@@ -77,6 +78,7 @@
         <p class="card-text text-light">{{ pst.body }}</p>
         <p class="card-text text-muted">{{ pst.date|timezone:"America/Los_Angeles" }}</p> <!-- best way to do time -->
 
+        <!-- make button and post call for making new post -->
         <p>
           <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
             Make a Comment
@@ -89,10 +91,9 @@
             </div>
             <div class="card-body">
               <h5 class="card-title">How do you feel about this Post?</h5>
-              <form method="post"> <!-- action = same page method = Get for now -->
+              <!-- use form to grab data -->
+              <form method="post">
                 {% csrf_token %}
-                <!-- <label for="postTitle">Post Title:</label><br>
-                <input type="text" id="postTitle" name="postTitle"><br> -->
                 <label for="text">text:</label><br>
                 <input type="text" id="text" name="text"><br>
               <br></br><input type="submit" value="Submit">
@@ -100,36 +101,37 @@
             </div>
           </div>
         </div>
-
       </div>
     </div>
 
+    <!--  go through master list of comments and display them based on the comment level
+          or 'threadedness' -->
     {% for comment in commentLst %}
       <div class="card">
-        <div class="card-body bg-secondary" style="padding-left:{{ comment.lvl }}em;">
+        <div class="card-body bg-secondary" style="padding-left:{{ comment.lvl }}em;"> <!-- use comment level to determine padding -->
           <h6 class="card-title text-dark">
-            {{ comment.comment.userPosted }}
+            {{ comment.comment.userPosted }} <!-- get the user that posted the comment - second 'comment' is the dictionary key -->
           </h6>
-          <p class="card-text text-light">{{ comment.comment.body }}</p>
+          <p class="card-text text-light">{{ comment.comment.body }}</p> <!-- get the comment's body - second 'comment' is the dictionary key -->
+
+          <!-- button and form for the user to make a comment on a comment -->
           <p>
             <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#h{{ comment.comment.id }}">
               Make a Comment
             </button>
           </p>
-          <div class="collapse" id="h{{ comment.comment.id }}">
+          <div class="collapse" id="h{{ comment.comment.id }}"> <!-- make special id using the comment's id so that only this paticular collapse is triggered-->
             <div class="card">
               <div class="card-header">
                 Make a new Comment
               </div>
               <div class="card-body">
                 <h5 class="card-title">How do you feel about this Post?</h5>
-                <form method="post"> <!-- action = same page method = Get for now -->
+                <form method="post">
                   {% csrf_token %}
-                  <!-- <label for="postTitle">Post Title:</label><br>
-                  <input type="text" id="postTitle" name="postTitle"><br> -->
                   <label for="text">text:</label><br>
                   <input type="text" id="text" name="text"><br>
-                  <input type='hidden' id='pId' name='pId' value='{{ comment.comment.id }}'>
+                  <input type='hidden' id='pId' name='pId' value='{{ comment.comment.id }}'> <!-- this is hidden because this is determined by which comment the user chose to comment on -->
                 <br></br><input type="submit" value="Submit">
                 </form>
               </div>
@@ -141,5 +143,4 @@
     {% endfor %}
 
   </body>
-
 </html>
