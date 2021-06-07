@@ -75,7 +75,7 @@ def createProfile(request):
 
         login(request, newUser) # automatic login
         return redirect('/posts/') # go to stream because logged-in
-        
+
     return render(request, 'posts/createProfile.html', {'name': 'Create Profile'})
 
 #------------------------------------------------------------------------------#
@@ -115,7 +115,7 @@ def stream(request):
     currentUser = request.user
 
     # get all top level posts for stream view
-    allPosts = Post.objects.filter(parent=None) # making sure only posts, not comments displayed
+    allPosts = Post.objects.filter(parent=None).order_by('-date') # making sure only posts, not comments displayed
     return render(request, 'posts/stream.html', {'name': 'stream', "allPosts": allPosts, 'currentUser': currentUser})
 
 #------------------------------------------------------------------------------#
@@ -133,7 +133,7 @@ def traverseComments(pId, lvl):
     """
     # get the current top level post (changes as the function gets deeper into the comment thread)
     post = Post.objects.get(pk = pId)
-    allComments = Post.objects.filter(parent=post) # get all subcomments for post
+    allComments = Post.objects.filter(parent=post).order_by('-date') # get all subcomments for post
     commentLst = []
     for comment in allComments:
         # add all comments in allComments to commentLst in dictionary form
@@ -207,7 +207,7 @@ def profile(request, profileId):
     # get the profile
     profile = Profile.objects.get(pk = profileId)
     # get all the top level posts for this profile
-    allPosts = Post.objects.filter(userPosted=profile.user).filter(parent=None)
+    allPosts = Post.objects.filter(userPosted=profile.user).filter(parent=None).order_by('-date')
 
     # if post method called
     if request.POST:
