@@ -7,11 +7,13 @@ First assignment commit Id number: db92952665093d414832dd6dc325168563bd5d95
 
 # Final Version Notes
 
-Purpose: the main point of my website/final project is to be a social media like device where the user can log in, make posts, view the posts, view profiles, and even update their own bio.
+Commit number/code to grade: a3635a5a8493151128903108260dc03abf65f656
+
+Purpose: the main point of my website/final project is to be a social media like site where the user can log in, make posts, view the posts, view profiles, and even update their own bio.
 
 Extra 30% things: 
 1) I made it so user's can create a new profile from a form
-2) User's can change the data, and in turn models, by updating only their profile's bio
+2) User's can change their bio, and in turn the model's data, by updating only their profile's bio
 3) there is unlimited multi-layered commenting that uses a recursive function and can go on forever (it's pretty cool :) )
 
 I also did some small things like getting the models to use UTC and then conveting it to LA time in the templates so that my website could hypothetically be used around the world. I also spent a fair amount of time making the UI not amazing, but pretty cool and definitely good enough to make the website usable and fun.
