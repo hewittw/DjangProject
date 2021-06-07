@@ -44,15 +44,17 @@
 
           <!-- Link 1-->
           <li class="nav-item dropdown">
-            <a href="/stream" class="btn btn-primary">Back to Stream</a>
+            <a class="nav-link" href="/stream" id="navbardrop">
+              <button class="btn btn-secondary">Back to Stream </button>
+            </a>
           </li>
 
           <!-- Link 2-->
           <li class="nav-item dropdown">
           <a>
-            <form action="/posts/" method="post">
+            <form style="margin-top: 8px;" action="/posts/" method="post">
               {% csrf_token %}
-              <button class="btn btn-primary">Log out</button>
+              <button class="btn btn-secondary">Log out</button>
             </form>
           </a>
           </li>

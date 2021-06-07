@@ -42,24 +42,26 @@
 
       <div class="collapse navbar-collapse" id="collapsible1Navbar">
         <ul class="navbar-nav">
+
           <!-- Link 1-->
-          <li class="nav-item dropdown">
-            <a class="nav-link" href="/profile/{{ currentUser.id }}" id="navbardrop">
-              Profile
-            </a>
+          <li style="margin-top: 8px;" class="nav-item dropdown">
+            <a href="/stream" class="btn btn-secondary">Back to Stream </a>
           </li>
 
           <!-- Link 2-->
           <li class="nav-item dropdown">
-            <a href="/stream" class="btn btn-primary">Back to Stream</a>
+            <a class="nav-link" href="/profile/{{ currentUser.id }}" id="navbardrop">
+              <button class="btn btn-secondary">Profile </button>
+            </a>
           </li>
 
           <!-- Link 3-->
           <li class="nav-item dropdown">
           <a>
-            <form action="/posts/" method="post"> <!-- action = same page method = Get for now -->
+            <form style="margin-top: 8px;" action="/posts/" method="post"> <!-- Worked on this with dad - I think boostrap has a bug here with its margins after some research
+                                                                                hard to hard code the margins so it looks nice on most buttons in the navbar -->
               {% csrf_token %}
-              <button class="btn btn-primary">Log out</button><!-- this must post to the index url -->
+              <button class="btn btn-secondary">Log out</button><!-- this must post to the index url -->
             </form>
           </a>
           </li>

@@ -41,22 +41,20 @@
       </button>
 
       <div class="collapse navbar-collapse" id="collapsible1Navbar">
-        <ul class="navbar-nav">
+        <ul class="navbar-nav align-middle">
           <!-- Link 1-->
           <li class="nav-item dropdown">
             <a class="nav-link" href="/profile/{{ currentUser.id }}" id="navbardrop">
-              Profile
+              <button class="btn btn-secondary">Profile </button>
             </a>
           </li>
 
           <!-- Link 2-->
-          <li class="nav-item dropdown">
-          <a>
-            <form action="/posts/" method="post">
+          <li style="vertical-align: middle; margin-top: 8px;" class="nav-item dropdown align-middle">
+            <form style="margin-block-end: 0em; vertical-align: middle;" class="align-middle" action="/posts/" method="post">
               {% csrf_token %}
-              <button class="btn btn-primary">Log out</button>
+              <button class="btn btn-secondary">Log out</button>
             </form>
-          </a>
           </li>
 
         </ul>
