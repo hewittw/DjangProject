@@ -27,14 +27,43 @@
     {% load tz %}
 
   </head>
-  <body class="laxBallBackground">
+  <body>
     <h1>{{ name }}</h1>
 
-    <script async src="https://cse.google.com/cse.js?cx=0e95cf4a4fd4724a3"></script>
-    <div class="gcse-search"></div>
+    <nav class="navbar navbar-expand-lg bg-dark navbar-dark sticky-top" >
+      <!-- NavBar Brand -->
+      <a class="navbar-brand" href="#Title">
+        <strong>Hewdit</strong>
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsible1Navbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-    <a href="/profile/{{ currentUser.id }}" class="btn btn-primary">Go to your profile</a>
-    <p>
+      <div class="collapse navbar-collapse" id="collapsible1Navbar">
+        <ul class="navbar-nav">
+          <!-- Link 1-->
+          <li class="nav-item dropdown">
+            <a class="nav-link" href="/profile/{{ currentUser.id }}" id="navbardrop">
+              Profile
+            </a>
+          </li>
+
+          <!-- Link 2-->
+          <li class="nav-item dropdown">
+          <a>
+            <form action="/posts/" method="post"> <!-- action = same page method = Get for now -->
+              {% csrf_token %}
+              <button class="btn btn-primary">Log out</button><!-- this must post to the index url -->
+            </form>
+          </a>
+          </li>
+
+        </ul>
+      </div>
+
+    </nav>
+
+
       <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
         Make a new Post
       </button>
@@ -60,29 +89,24 @@
     </div>
 
 
-    <br><form action="/posts/" method="post"> <!-- action = same page method = Get for now -->
-      {% csrf_token %}
-      <button class="btn btn-primary">Log out</button><!-- this must post to the index url -->
-    </form>
-
-
-
     {% for pst in allPosts %}
+
       <div class="card">
         <div class="card-body bg-dark">
           <h5 class="card-title text-primary">{{ pst.title }}</h5>
           <h6 class="card-title">
             <a href="/profile/{{ pst.userPosted.id }}" class="btn btn-primary">{{ pst.userPosted }}</a>
           </h6>
-          <p class="card-text text-light">Date Posted: {{ pst.date|timezone:"America/Los_Angeles" }}</p> <!-- best way to do time -->
-
-
           <p class="card-text text-light">{{ pst.body }}</p>
+          <p class="card-text text-muted">{{ pst.date|timezone:"America/Los_Angeles" }}</p> <!-- best way to do time -->
           <a href="/thread/{{ pst.id }}" class="btn btn-primary">Go to post</a>
         </div>
       </div>
+
     {% endfor %}
 
+    <script async src="https://cse.google.com/cse.js?cx=0e95cf4a4fd4724a3"></script>
+    <div class="gcse-search"></div>
 
   </body>
 

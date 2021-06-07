@@ -64,17 +64,21 @@ def createProfile(request):
     # if post method is called
     if request.POST:
         # create new user using the data entered
-        newUser = User.objects.create_user(username = request.POST['username'],
-                            email = request.POST['email'],
-                            password = request.POST['password'],)
+        try:
+            newUser = User.objects.create_user(username = request.POST['username'],
+                                email = request.POST['email'],
+                                password = request.POST['password'],)
 
-        # create profile that corresponds to user - have a 1:1 relationship
-        newProfile = Profile(user = newUser,
-                             bio = request.POST['bio'], )
-        newProfile.save()
+            # create profile that corresponds to user - have a 1:1 relationship
+            newProfile = Profile(user = newUser,
+                                 bio = request.POST['bio'], )
+            newProfile.save()
 
-        login(request, newUser) # automatic login
-        return redirect('/posts/') # go to stream because logged-in
+            login(request, newUser) # automatic login
+            return redirect('/posts/') # go to stream because logged-in
+
+        except:
+            print("creating a new user did not work")
 
     return render(request, 'posts/createProfile.html', {'name': 'Create Profile'})
 
@@ -184,9 +188,12 @@ def thread(request, pId):
         return redirect('/posts/thread/' + str(pId))
 
     # get master list of all comments
-    commentLst = traverseComments(pId, 0)
+    commentLst = traverseComments(pId, 1)
 
-    return render(request, 'posts/thread.html', {'name': 'thread', 'pId': pId, 'pst': post, 'commentLst': commentLst})
+    # get user so the go-to-profile button can be generated in view
+    currentUser = request.user
+
+    return render(request, 'posts/thread.html', {'name': 'thread', 'pId': pId, 'pst': post, 'commentLst': commentLst, 'currentUser': currentUser})
 
 #------------------------------------------------------------------------------#
 
@@ -216,6 +223,9 @@ def profile(request, profileId):
 
             #return redirect('/posts/profile/' + str(profileId))  - get this working -- why not work the way you want it to?????
 
-    return render(request, 'posts/profile.html', {'name': 'profile', 'pId': profileId, 'profile': profile, 'allPosts': allPosts})
+
+    showEditButton = profile.user == request.user
+
+    return render(request, 'posts/profile.html', {'name': 'profile', 'pId': profileId, 'profile': profile, 'allPosts': allPosts, 'showEditButton': showEditButton,})
 
 #------------------------------------------------------------------------------#

@@ -23,49 +23,85 @@
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'posts/t1.css' %}">
 
+    {% load tz %}
+
   </head>
-  <body class="laxBallBackground">
+  <body>
     <h1>{{ name }}</h1>
 
-    <br><form action="/posts/" method="post"> <!-- action = same page method = Get for now -->
-      {% csrf_token %}
-      <button class="btn btn-primary">Log out</button><!-- this must post to the index url -->
-    </form>
+
+    <nav class="navbar navbar-expand-lg bg-dark navbar-dark sticky-top" >
+      <!-- NavBar Brand -->
+      <a class="navbar-brand" href="#Title">
+        <strong>Hewdit</strong>
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsible1Navbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="collapsible1Navbar">
+        <ul class="navbar-nav">
+
+          <!-- Link 1-->
+          <li class="nav-item dropdown">
+            <a href="/stream" class="btn btn-primary">Back to Stream</a>
+          </li>
+
+          <!-- Link 2-->
+          <li class="nav-item dropdown">
+          <a>
+            <form action="/posts/" method="post"> <!-- action = same page method = Get for now -->
+              {% csrf_token %}
+              <button class="btn btn-primary">Log out</button><!-- this must post to the index url -->
+            </form>
+          </a>
+          </li>
+
+        </ul>
+      </div>
+
+    </nav>
 
     <div class="card">
       <div class="card-body bg-dark">
         <!-- <img src="profile.profilepic" alt="Profile Picture"> --> <!-- doesn't work right yet - will work on as we do more-->
         <h5 class="card-title text-primary"> {{profile.user}} </h5>
-        <h5 class="card-title text-primary">Bio: {{ profile.bio }}</h5>
-        <a href="/stream" class="btn btn-primary">Back to Stream</a>
+        <h5 class="card-title text-secondary">{{ profile.bio }}</h5>
+
+        {% if showEditButton %}
+          <p>
+            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+              Update bio
+            </button>
+          </p>
+          <div class="collapse" id="collapseExample">
+            <div class="card">
+              <div class="card-header">
+                Edit Bio
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">What's your theme today?</h5>
+                <form method="post"> <!-- action = same page method = Get for now -->
+                  {% csrf_token %}
+
+                  <label for="bio">Bio:</label><br>
+                  <input type="text" id="bio" name="bio"><br></br>
+
+                <br></br><input type="submit" value="Submit">
+                </form>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+
       </div>
     </div>
 
-    <p>
-      <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-        Update bio
-      </button>
-    </p>
-    <div class="collapse" id="collapseExample">
-      <div class="card">
-        <div class="card-header">
-          Edit Bio
-        </div>
-        <div class="card-body">
-          <h5 class="card-title">What's your theme today?</h5>
-          <form method="post"> <!-- action = same page method = Get for now -->
-            {% csrf_token %}
-
-            <label for="bio">Bio:</label><br>
-            <input type="text" id="bio" name="bio"><br></br>
-
-          <br></br><input type="submit" value="Submit">
-          </form>
-        </div>
+    <div class="card">
+      <div class="card-body bg-secondary">
+        <h2>Posts by {{ profile.user}}:</h2>
       </div>
     </div>
-
-    <h2>Their Posts</h2>
 
     {% for pst in allPosts %}
       <div class="card">
@@ -74,14 +110,12 @@
           <h6 class="card-title">
             <a href="/profile/{{ pst.userPosted.id }}" class="btn btn-primary">{{ pst.userPosted }}</a>
           </h6>
-          <p class="card-text text-light">Date Posted: {{ pst.date }}</p>
+          <p class="card-text text-light">Date Posted: {{ pst.date|timezone:"America/Los_Angeles" }}</p>
           <p class="card-text text-light">{{ pst.body }}</p>
           <a href="/thread/{{ pst.id }}" class="btn btn-primary">Go to post</a>
         </div>
       </div>
     {% endfor %}
-
-
 
   </body>
 

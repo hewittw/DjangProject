@@ -23,64 +23,100 @@
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'posts/t1.css' %}">
 
+    {% load tz %}
+
   </head>
-  <body class="laxBallBackground">
+  <body>
     <h1>{{ name }}</h1>
 
-    <br><form action="/posts/" method="post"> <!-- action = same page method = Get for now -->
-      {% csrf_token %}
-      <button class="btn btn-primary">Log out</button><!-- this must post to the index url -->
-    </form>
-
-    <p>
-      <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-        Make a Comment
+    <nav class="navbar navbar-expand-lg bg-dark navbar-dark sticky-top" >
+      <!-- NavBar Brand -->
+      <a class="navbar-brand" href="#Title">
+        <strong>Hewdit</strong>
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsible1Navbar">
+        <span class="navbar-toggler-icon"></span>
       </button>
-    </p>
-    <div class="collapse" id="collapseExample">
-      <div class="card">
-        <div class="card-header">
-          Make a new Comment
-        </div>
-        <div class="card-body">
-          <h5 class="card-title">How do you feel about this Post?</h5>
-          <form method="post"> <!-- action = same page method = Get for now -->
-            {% csrf_token %}
-            <!-- <label for="postTitle">Post Title:</label><br>
-            <input type="text" id="postTitle" name="postTitle"><br> -->
-            <label for="text">text:</label><br>
-            <input type="text" id="text" name="text"><br>
-          <br></br><input type="submit" value="Submit">
-          </form>
-        </div>
+
+      <div class="collapse navbar-collapse" id="collapsible1Navbar">
+        <ul class="navbar-nav">
+          <!-- Link 1-->
+          <li class="nav-item dropdown">
+            <a class="nav-link" href="/profile/{{ currentUser.id }}" id="navbardrop">
+              Profile
+            </a>
+          </li>
+
+          <!-- Link 2-->
+          <li class="nav-item dropdown">
+            <a href="/stream" class="btn btn-primary">Back to Stream</a>
+          </li>
+
+          <!-- Link 3-->
+          <li class="nav-item dropdown">
+          <a>
+            <form action="/posts/" method="post"> <!-- action = same page method = Get for now -->
+              {% csrf_token %}
+              <button class="btn btn-primary">Log out</button><!-- this must post to the index url -->
+            </form>
+          </a>
+          </li>
+
+        </ul>
       </div>
-    </div>
+
+    </nav>
 
 
     <div class="card">
       <div class="card-body bg-dark">
         <h5 class="card-title text-primary">{{ pst.title }}</h5>
-        <h6 class="card-title text-light">{{ pst.userPosted }}</h6>
+        <h6 class="card-title text-light">
+          <a href="/profile/{{ pst.userPosted.id }}" class="btn btn-primary">{{ pst.userPosted }}</a>
+        </h6>
         <p class="card-text text-light">{{ pst.body }}</p>
-        <a href="/stream" class="btn btn-primary">Back to Stream</a>
+        <p class="card-text text-muted">{{ pst.date|timezone:"America/Los_Angeles" }}</p> <!-- best way to do time -->
+
+        <p>
+          <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+            Make a Comment
+          </button>
+        </p>
+        <div class="collapse" id="collapseExample">
+          <div class="card">
+            <div class="card-header">
+              Make a new Comment
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">How do you feel about this Post?</h5>
+              <form method="post"> <!-- action = same page method = Get for now -->
+                {% csrf_token %}
+                <!-- <label for="postTitle">Post Title:</label><br>
+                <input type="text" id="postTitle" name="postTitle"><br> -->
+                <label for="text">text:</label><br>
+                <input type="text" id="text" name="text"><br>
+              <br></br><input type="submit" value="Submit">
+              </form>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
 
     {% for comment in commentLst %}
       <div class="card">
         <div class="card-body bg-secondary" style="padding-left:{{ comment.lvl }}em;">
-          <h6 class="card-title text-light">
-            <a href="/profile/{{ pst.userPosted.id }}" class="btn btn-primary">{{ comment.comment.userPosted }}</a>
+          <h6 class="card-title text-dark">
+            {{ comment.comment.userPosted }}
           </h6>
           <p class="card-text text-light">{{ comment.comment.body }}</p>
-          <p class="card-text text-light">Date Posted: {{ comment.comment.date }}</p>
-          <p class="card-text text-light">Lvl: {{ comment.lvl }}</p>
           <p>
-            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#h{{ comment.comment.id }}">
               Make a Comment
             </button>
           </p>
-          <div class="collapse" id="collapseExample">
+          <div class="collapse" id="h{{ comment.comment.id }}">
             <div class="card">
               <div class="card-header">
                 Make a new Comment
